@@ -1,6 +1,7 @@
 -- Criação do banco de dados 
 CREATE DATABASE IF NOT EXISTS AgendaSalao;
-USE AgendaSalao;
+USE AgendaSalao; 
+
 
 -- Tabela Cliente
 CREATE TABLE Cliente (
