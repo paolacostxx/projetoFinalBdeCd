@@ -1,68 +1,57 @@
--- Criação do banco de dados 
-CREATE DATABASE IF NOT EXISTS AgendaSalao;
-USE AgendaSalao; 
-
-
--- Tabela Cliente
-CREATE TABLE Cliente (
-    cliente_id INT SERIAL PRIMARY KEY,
+CREATE TABLE clienteSalao (
+    cli_id INT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     telefone VARCHAR(20)
 
 );
-CREATE TABLE cliente_pf(
-    cliente_id INT SERIAL FOREIGN KEY,
-    cpf VARCHAR (11) UNIQUE NOT NULL,
-    dataNasc DATE
+
+CREATE TABLE pessoa_fisica (
+    id_cliente INTEGER NOT NULL REFERENCES clienteSalao(cli_id),
+    cpf VARCHAR(11)UNIQUE,
+    data_nascimento DATE
 );
 
-CREATE TABLE cliente_pj(
-    cliente_id INT SERIAL FOREIGN KEY,
-    cnpj VARCHAR(14) UNIQUE NOT NULL
+CREATE TABLE pessoa_juridica (
+    id_pj SERIAL PRIMARY KEY,
+    cli_id INTEGER NOT NULL REFERENCES clienteSalao(cli_id),
+    cnpj CHAR(14) UNIQUE,
+    razao_social VARCHAR(100)
 );
 
--- Tabela Funcionário
-CREATE TABLE Funcionario (
-    funcionario_id INT SERIAL PRIMARY KEY,
+CREATE TABLE funcionario (
+    id_funcionario SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    documento VARCHAR(20) UNIQUE NOT NULL,
+    cpf CHAR(11) UNIQUE NOT NULL,
     telefone VARCHAR(20),
     email VARCHAR(100),
-    cargo VARCHAR(50),
-    especialidade VARCHAR(100),
-    dataNasc DATE
+    cargo VARCHAR(50), -- Ex: Cabeleireiro, Manicure, Depiladora
+    especialidade VARCHAR(100), -- Descrição da especialidade
+    data_nascimento DATE
 );
 
--- Tabela Serviço
-CREATE TABLE Servico (
-    servico_id INT SERIAL PRIMARY KEY,
-    nomeServico VARCHAR(100) NOT NULL,
+
+-- Serviço
+CREATE TABLE servico (
+    id_servico SERIAL PRIMARY KEY,
+    nome_servico VARCHAR(100) NOT NULL,
     descricao TEXT,
-    preco DECIMAL(10,2) NOT NULL
+    preco DECIMAL(10, 2) NOT NULL,
+    duracao_minutos INT
 );
 
--- Tabela Agendamento
-CREATE TABLE Agendamento (
-    agendamento_id INT SERIAL PRIMARY KEY,
-    dataHora DATETIME NOT NULL,
-    cli_id INT NOT NULL,
-    funcionario_id INT NOT NULL,
-    status VARCHAR(50),
 
-    FOREIGN KEY (cli_id) REFERENCES Cliente(cli_id)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (funcionario_id) REFERENCES Funcionario(funcionario_id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE agendamento (
+    id_agendamento SERIAL PRIMARY KEY,
+    cli_id INTEGER NOT NULL REFERENCES clienteSalao(cli_id),
+    id_funcionario INTEGER NOT NULL REFERENCES funcionario(id_funcionario),
+    data_hora TIMESTAMP NOT NULL,
+    status VARCHAR(50), -- Ex: 'Agendado', 'Concluído', 'Cancelado'
+    criado_em DATE DEFAULT CURRENT_DATE,
+    atualizado_em DATE
 );
 
--- Tabela associativa AgendamentoServico (N:N)
-CREATE TABLE AgendamentoServico (
-    agendamento_id INT NOT NULL,
-    servico_id INT NOT NULL,
-    PRIMARY KEY (agendamento_id, servico_id),
-
-    FOREIGN KEY (agendamento_id) REFERENCES Agendamento(agendamento_id)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (servico_id) REFERENCES Servico(servico_id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE agendamento_servico (
+    id_agendamento INTEGER NOT NULL REFERENCES agendamento(id_agendamento) ON DELETE CASCADE,
+    id_servico INTEGER NOT NULL REFERENCES servico(id_servico) ON DELETE CASCADE,
+    PRIMARY KEY (id_agendamento, id_servico)
 );
