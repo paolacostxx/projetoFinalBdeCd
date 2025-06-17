@@ -1,3 +1,5 @@
+CREATE DATABASE "AgendaSalao";
+
 CREATE TABLE clienteSalao (
     cli_id INT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -12,8 +14,7 @@ CREATE TABLE pessoa_fisica (
 );
 
 CREATE TABLE pessoa_juridica (
-    id_pj SERIAL PRIMARY KEY,
-    cli_id INTEGER NOT NULL REFERENCES clienteSalao(cli_id),
+    id_cliente INTEGER NOT NULL REFERENCES clienteSalao(cli_id),
     cnpj CHAR(14) UNIQUE,
     razao_social VARCHAR(100)
 );
@@ -23,7 +24,6 @@ CREATE TABLE funcionario (
     nome VARCHAR(100) NOT NULL,
     cpf CHAR(11) UNIQUE NOT NULL,
     telefone VARCHAR(20),
-    email VARCHAR(100),
     cargo VARCHAR(50), -- Ex: Cabeleireiro, Manicure, Depiladora
     especialidade VARCHAR(100), -- Descrição da especialidade
     data_nascimento DATE
@@ -35,8 +35,7 @@ CREATE TABLE servico (
     id_servico SERIAL PRIMARY KEY,
     nome_servico VARCHAR(100) NOT NULL,
     descricao TEXT,
-    preco DECIMAL(10, 2) NOT NULL,
-    duracao_minutos INT
+    preco DECIMAL(10, 2) NOT NULL
 );
 
 
@@ -45,13 +44,17 @@ CREATE TABLE agendamento (
     cli_id INTEGER NOT NULL REFERENCES clienteSalao(cli_id),
     id_funcionario INTEGER NOT NULL REFERENCES funcionario(id_funcionario),
     data_hora TIMESTAMP NOT NULL,
-    status VARCHAR(50), -- Ex: 'Agendado', 'Concluído', 'Cancelado'
-    criado_em DATE DEFAULT CURRENT_DATE,
-    atualizado_em DATE
+    status VARCHAR(50) -- Ex: 'Agendado', 'Concluído', 'Cancelado',
 );
 
-CREATE TABLE agendamento_servico (
-    id_agendamento INTEGER NOT NULL REFERENCES agendamento(id_agendamento) ON DELETE CASCADE,
-    id_servico INTEGER NOT NULL REFERENCES servico(id_servico) ON DELETE CASCADE,
-    PRIMARY KEY (id_agendamento, id_servico)
-);
+ALTER TABLE Agendamento  
+	ADD CONSTRAINT clientefk 
+	FOREIGN KEY (cli_id) 
+	REFERENCES clienteSalao(cli_id)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE Agendamento  
+	ADD CONSTRAINT funcionariofk 
+	FOREIGN KEY (id_funcionario) 
+	REFERENCES Funcionario(id_funcionario)
+	ON DELETE CASCADE ON UPDATE CASCADE;
