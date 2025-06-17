@@ -16,7 +16,8 @@ VALUES (3, '12345678000199', 'Empresa Beleza Ltda');
 -- Funcionários
 INSERT INTO funcionario (nome, cpf, telefone, cargo, especialidade, data_nascimento)
 VALUES ('Mariana Souza', '34567890122', '(11) 99876-5432', 'Cabeleireira', 'Corte e Colorimetria', '1990-03-15'),
-       ('Carlos Almeida', '45678901233', '(11) 98765-4321', 'Manicure', 'Unhas em gel', '1992-07-20');
+       ('Carlos Almeida', '45678901233', '(11) 98765-4321', 'Manicure', 'Unhas em gel', '1992-07-20'),
+       ('Rebecca Reis', '34434590122', '(15) 98876-6431', 'Recepcionista', 'Agendamento', '1990-12-05');;
 
 -- Serviços
 INSERT INTO servico (nome_servico, descricao, preco)
