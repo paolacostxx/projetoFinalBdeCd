@@ -25,7 +25,23 @@ VALUES ('Corte de Cabelo Feminino', 'Corte estilizado, inclui lavagem e finaliza
        ('Coloração', 'Tingimento dos cabelos, inclui retoque de raiz', 150.00),
        ('Manicure', 'Limpeza, corte, esmaltação e hidratação das unhas', 40.00);
 
+
 -- Agendamentos
 INSERT INTO agendamento (cli_id, id_funcionario, data_hora, status)
 VALUES (1, 1, '2025-06-20 14:00:00', 'Agendado'),
        (2, 2, '2025-06-21 10:00:00', 'Concluído');
+
+
+-- Manipulação de dados
+SELECT * FROM clientesalao;
+
+UPDATE clientesalao
+SET nome = 'Ana Beatriz'
+WHERE telefone =  '(11)98805-5678';
+
+CREATE TABLE  Email(
+email VARCHAR(100)
+);
+
+DROP TABLE Email;
+
