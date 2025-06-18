@@ -1,0 +1,9 @@
+CREATE USER lauren WITH PASSWORD 'glamour';
+
+
+GRANT INSERT, SELECT ON agendamento TO lauren;
+GRANT SELECT ON clientesalao TO lauren;
+GRANT SELECT ON funcionario TO lauren;
+GRANT SELECT ON servico TO lauren;
+
+REVOKE INSERT ON servico FROM lauren;
