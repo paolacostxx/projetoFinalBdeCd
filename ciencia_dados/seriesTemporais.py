@@ -1,0 +1,11 @@
+# === 6. Séries Temporais ===
+agendamentos_por_data = agendamentos.groupby('dataHora').size()
+plt.figure(figsize=(10, 5))
+agendamentos_por_data.plot(marker='o')
+plt.title('Evolução dos Agendamentos por Data')
+plt.xlabel('Data')
+plt.ylabel('Quantidade de Agendamentos')
+plt.grid(True)
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
